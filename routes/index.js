@@ -3,7 +3,9 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var axios = require('axios');
 var controller = require('../controller/controller');
+var session = require('express-session');
 
+var app=express();
 
 // mongoose.connect('mongodb://localhost:27017/szakdolgozat', { useNewUrlParser: true }, function (error) {
 //     if(error) {
@@ -21,7 +23,7 @@ var controller = require('../controller/controller');
 
 /* GET home page. */
 router.get('/', function(req, res) {
-    res.render('index', { title: 'Express' });
+    res.redirect('/map');
 });
 
 router.get('/mapjson/:name', function (req, res) {
@@ -100,6 +102,31 @@ router.get('/test', function(req, res) {
     // Json.find({}, {}, function(e, docs) {
     //     
     // });
+});
+
+router.get('/admin', function(req, res) {
+    res.render('admin/login');
+})
+
+router.post('/auth', function(request, response) {
+	var username = request.body.username;
+	var password = request.body.password;
+	if (username && password) {
+		// connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
+			// if (results.length > 0) {
+            if(username === "admin" && password === "admin") {
+				// request.session.loggedin = true;
+				// request.session.username = username;
+				response.redirect('/map');
+			} else {
+				response.send('<h1>Incorrect Username and/or Password!</h1><p><button onclick="window.history.back()">Go Back</button></p>');
+			}			
+			response.end();
+		// });
+	} else {
+		response.send('<h1>Please enter Username and Password!</h1><p><button onclick="window.history.back()">Go Back</button></p>');
+		response.end();
+	}
 });
 
 
