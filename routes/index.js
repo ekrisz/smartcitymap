@@ -5,19 +5,19 @@ var axios = require('axios');
 var controller = require('../controller/controller');
 
 
-mongoose.connect('mongodb://localhost:27017/szakdolgozat', { useNewUrlParser: true }, function (error) {
-    if(error) {
-        console.log(error);
-    }
-});
+// mongoose.connect('mongodb://localhost:27017/szakdolgozat', { useNewUrlParser: true }, function (error) {
+//     if(error) {
+//         console.log(error);
+//     }
+// });
 
-var Schema = mongoose.Schema;
-var JsonSchema = mongoose.Schema({
-    name: String,
-    type: Schema.Types.Mixed
-});
+// var Schema = mongoose.Schema;
+// var JsonSchema = mongoose.Schema({
+//     name: String,
+//     type: Schema.Types.Mixed
+// });
 
-var Json = mongoose.model('JString', JsonSchema, 'layercollection');
+// var Json = mongoose.model('JString', JsonSchema, 'layercollection');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -41,7 +41,7 @@ router.get('/maplayers', function (req, res) {
 router.get('/map', function(req, res) {
     controller.dataGet().then(
         function(val) {
-            console.log(val)
+            // console.log(val)
             res.render('map_', {
                 "items" : val,
                 // "popupText": val.desc,
