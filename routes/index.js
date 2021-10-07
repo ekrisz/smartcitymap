@@ -39,7 +39,8 @@ router.get('/maplayers', function (req, res) {
 });
 
 router.get('/map', function(req, res) {
-    controller.dataGet().then(
+    controller.dataGet()
+        .then(
         function(val) {
             // console.log(val)
             res.render('map_', {
@@ -49,8 +50,10 @@ router.get('/map', function(req, res) {
                 lng : -6.24431
             });
         },
-        function(error) {console.log(error)}
-    );
+        function(error) {res.render('error', {
+            "error": error
+        })}
+        );
     // Json.find({}, {}, function(e, docs) {
     //     
     // });
