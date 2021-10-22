@@ -34,8 +34,8 @@ router.post('/firstrun', async function(req, res) {
             password: null
         },
         mapSettings: {
-            url: null,
-            resourceID: null,
+            url: 'https://data.smartdublin.ie/api/3/action/datastore_search',
+            resourceID: '564f9486-26b1-4e54-8328-bb1113566c86',
             limit: null,
             query: null
         }
