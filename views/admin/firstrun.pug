@@ -1,0 +1,10 @@
+html 
+    head 
+        title SmartCityMap :: First Run 
+    body 
+        h1 First run page 
+        p Please choose a username and password for the admin user
+        form(action="admin/firstrun", method="post")
+            input(type="text", name="username", required, placeholder="Admin username")
+            input(type="password", name="password", required, placeholder="Admin password") 
+            input(type="submit", value="Save")
