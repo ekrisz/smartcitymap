@@ -3,15 +3,21 @@ var router = express.Router();
 const fs = require('fs');
 const config = './config.json';
 var bcrypt = require('bcrypt');
-
-
-var app=express();
+var ping = require('ping');
+let loginData;
+let mapSettings;
 
 router.get('/', function(req, res) {
     try{
         if(fs.existsSync(config)) {
             if(req.session.authenticated) {
-                res.redirect('/map');
+                res.render('admin/admin', {
+                    authenticated: req.session.authenticated,
+                    data: {
+                        url: mapSettings.url,
+                        resourceID: mapSettings.resourceID
+                    }
+                });
             } else {
                 res.render('admin/login', {
                     authenticated: req.session.authenticated
@@ -21,7 +27,11 @@ router.get('/', function(req, res) {
           res.render('admin/firstrun');
         }
     } catch(err) {
-        res.send(err.message);
+        response.render('error', {
+            error: {
+                message: err
+            }
+        });
     }
     
     
@@ -47,10 +57,14 @@ router.post('/firstrun', async function(req, res) {
         password: encryptedPassword
     };
     try{
-        fs.writeFileSync(config, JSON.stringify(cfgData));
+        fs.writeFileSync(config, JSON.stringify(cfgData, null, 4));
         res.redirect('/admin');
     } catch(err) {
-        res.send(err.message);
+        response.render('error', {
+            error: {
+                message: err
+            }
+        });
     }
     
 
@@ -58,49 +72,69 @@ router.post('/firstrun', async function(req, res) {
 })
 
 router.post('/auth', async function(request, response) {
-    loginData = null;
     try{
-        loginData = JSON.parse(fs.readFileSync(config)).loginData;
+        const loadedConfig = JSON.parse(fs.readFileSync(config));
+        loginData = loadedConfig.loginData;
+        mapSettings = loadedConfig.mapSettings;
     } catch(err) {
-        res.send(err.message);
+        response.send(err.message);
     }
 	if (loginData && loginData.username === request.body.username) {
         const validPassword = await bcrypt.compare(request.body.password, loginData.password);
         if(validPassword) {
             request.session.authenticated = true;
-            response.redirect('/map');
+            response.redirect('/admin');
         } else {
-            response.status(401).send('<h1>Incorrect Username and/or Password!</h1><p><button onclick="window.history.back()">Go Back</button></p>');
+            response.render('error', {
+                error: {
+                    message: "Incorrect password!"
+                }
+            });
         }			
-        response.end();
 	} else {
-		response.status(401).send('<h1>Incorrect Username and/or Password!</h1><p><button onclick="window.history.back()">Go Back</button></p>');
-		response.end();
+		response.render('error', {
+            error: {
+                message: "Incorrect username!"
+            }
+        });
 	}
 });
-
-router.get('/config', function(req, res) {
-    try{
-      if(fs.existsSync(config)) {
-        res.redirect("/");
-      } else {
-        fs.writeFileSync(config, "");
-        res.send("No config file");
-      }
-    } catch(err) {
-      res.send(err.message);
-    }
-    if(req.session.authenticated) {
-        res.send("Authenticated");
-    } else {
-        req.session.authenticated = true;
-        res.send("Not authenticated");
-    }
-  });
 
 router.get('/logout', function(req, res) {
     req.session.authenticated = false;
     res.redirect('/map');
 })
+
+router.post('/save', async function (req, res) {
+    const url = req.body.url
+    const hostname = new URL(url).hostname;
+
+    let isPingOK = await (await ping.promise.probe(hostname)).alive;
+
+    if(isPingOK) {
+        mapSettings.url = url;
+        mapSettings.resourceID = req.body.resourceID;
+        let cfgData = {
+            loginData,
+            mapSettings
+        }
+        try{
+            fs.writeFileSync(config, JSON.stringify(cfgData, null, 4));
+            res.redirect('/admin');
+        } catch(err) {
+            res.render('error', {
+                error: {
+                    message: "Ping test OK, but an error occured during saving the config file. Please try again. Error message: " + err
+                }
+            });
+        }
+    } else {
+        res.render('error', {
+            error: {
+                message: "Ping test error because URL may not be valid. Data not saved."
+            }
+        });
+    }
+});
 
 module.exports = router;

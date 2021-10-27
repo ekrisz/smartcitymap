@@ -1,5 +1,7 @@
-extends layout
+extends menu
 
 block content
-  h1 Something went wrong
-  h2= error.message
+  div(class="alert alert-danger").
+    <strong>Something went wrong</strong><br>
+    #{error.message}
+  button(onclick="window.history.back()", class="btn btn-primary") Go back

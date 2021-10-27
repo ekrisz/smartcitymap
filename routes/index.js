@@ -12,7 +12,7 @@ router.get('/map', function(req, res) {
         .then(
         function(val) {
             // console.log(val)
-            res.render('map_', {
+            res.render('map', {
                 title: "SmartCityMap",
                 "items" : val,
                 authenticated: req.session.authenticated

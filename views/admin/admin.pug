@@ -1,0 +1,19 @@
+extends ../menu 
+block content 
+    div(class="container")
+        h1 Admin page
+        p Be careful, this is the admin page
+        div(class="card")
+            div(class="card-body")
+                h4(class="card-title") Map settings 
+                div(class="card-text")
+                    form(action="admin/save", method="post")
+                        div(class="mb-3 mt-3")
+                            label(for="url", class="form-label") API URL:
+                            input(type="url", class="form-control", id="url", name="url", placeholder="https://example.com/api/v1/get", required, pattern="(http|https):\/\/.*", value=`${data.url}`)
+                        div(class="mb-3 mt-3")
+                            label(for="resourceID", class="form-label") Resource ID: 
+                            input(type="text", class="form-control", name="resourceID", id="resourceID", value=`${data.resourceID}`, required)
+                        button(type="submit", class="btn btn-success") Save
+    
+        

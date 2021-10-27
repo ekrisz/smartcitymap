@@ -1,7 +1,7 @@
 extends menu
 block content
+    
     #map
-
     script(type='text/javascript').
         var map = L.map('map').setView([#{items.latMed},#{items.lonMed}], 14);
 
@@ -12,9 +12,9 @@ block content
         }).addTo(map);
     each item in items.points
         script(type='text/javascript').
-           
+        
             L.circleMarker([!{item.coordinate}]).addTo(map)
                 .bindPopup(
                     '<p>Battery: ' + !{item.description} + '</p>'
                 );
-               
+                

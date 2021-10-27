@@ -9,6 +9,7 @@ var session = require('express-session');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
+const exp = require('constants');
 
 var app = express();
 
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist/'));
 app.use(session({
   secret: '8f726ae11b23b781cc207dd26e01d8af',
   resave: true,
@@ -29,6 +31,7 @@ app.use(session({
 app.use('/admin', adminRouter);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
 
 app.use(function(req, res, next) {
   next(createError(404));
