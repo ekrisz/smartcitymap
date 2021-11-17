@@ -11,7 +11,7 @@ router.get('/map', function(req, res) {
     controller.dataGet()
         .then(
         function(val) {
-            // console.log(val)
+            console.log(val)
             res.render('map', {
                 title: "SmartCityMap",
                 "items" : val,

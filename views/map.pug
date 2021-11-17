@@ -14,7 +14,5 @@ block content
         script(type='text/javascript').
         
             L.circleMarker([!{item.coordinate}]).addTo(map)
-                .bindPopup(
-                    '<p>Battery: ' + !{item.description} + '</p>'
-                );
+                .bindPopup(!{item.description});
                 

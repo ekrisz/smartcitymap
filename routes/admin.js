@@ -1,4 +1,5 @@
 var express = require('express');
+let controller = require('../controller/controller');
 var router = express.Router();
 const fs = require('fs');
 const config = './config.json';
@@ -6,18 +7,36 @@ var bcrypt = require('bcrypt');
 var ping = require('ping');
 let loginData;
 let mapSettings;
+let fields;
 
 router.get('/', function(req, res) {
     try{
         if(fs.existsSync(config)) {
             if(req.session.authenticated) {
-                res.render('admin/admin', {
+                if(mapSettings.url == null || req.query.config == 'url') {
+                    res.render('admin/admin', {
                     authenticated: req.session.authenticated,
-                    data: {
-                        url: mapSettings.url,
-                        resourceID: mapSettings.resourceID
-                    }
-                });
+                    mapSettings,
+                    step: 0
+                    });
+                } else {
+                    controller.getAll().then(function(val) {
+                        fields = val.data.result.fields;
+                        res.render('admin/admin', {
+                            authenticated: req.session.authenticated,
+                            mapSettings,
+                            step: 1,
+                            fields: fields
+                        });
+                    }, function(error) {
+                            console.log(error);
+                            res.render('error', {
+                                error: {
+                                    message: error
+                                }
+                            });
+                    });
+                }
             } else {
                 res.render('admin/login', {
                     authenticated: req.session.authenticated
@@ -44,10 +63,11 @@ router.post('/firstrun', async function(req, res) {
             password: null
         },
         mapSettings: {
-            url: 'https://data.smartdublin.ie/api/3/action/datastore_search',
-            resourceID: '564f9486-26b1-4e54-8328-bb1113566c86',
+            url: null, //'https://data.smartdublin.ie/api/3/action/datastore_search',
+            resourceID: null, //'564f9486-26b1-4e54-8328-bb1113566c86',
             limit: null,
-            query: null
+            query: null,
+            selectedFields: null
         }
     };
     const salt = await bcrypt.genSalt(10);
@@ -105,36 +125,59 @@ router.get('/logout', function(req, res) {
     res.redirect('/map');
 })
 
-router.post('/save', async function (req, res) {
-    const url = req.body.url
-    const hostname = new URL(url).hostname;
+router.post('/save', function (req, res) {
+    switch(req.body.step) {
+        case "0":
+            const url = req.body.url
+            // const hostname = new URL(url).hostname;
+            // let isPingOK = await (await ping.promise.probe(hostname)).alive;
 
-    let isPingOK = await (await ping.promise.probe(hostname)).alive;
+            // if(isPingOK) {
+                mapSettings.url = url;
+                mapSettings.resourceID = req.body.resourceID;
+                try {
+                    let cfgData = {
+                        loginData,
+                        mapSettings
+                    }
+                    fs.writeFileSync(config, JSON.stringify(cfgData, null, 4));
+                    res.redirect('/admin');
 
-    if(isPingOK) {
-        mapSettings.url = url;
-        mapSettings.resourceID = req.body.resourceID;
-        let cfgData = {
-            loginData,
-            mapSettings
-        }
-        try{
-            fs.writeFileSync(config, JSON.stringify(cfgData, null, 4));
-            res.redirect('/admin');
-        } catch(err) {
-            res.render('error', {
-                error: {
-                    message: "Ping test OK, but an error occured during saving the config file. Please try again. Error message: " + err
+                } catch(err) {
+                    res.render('error', {
+                        error: {
+                            message: "Ping test OK, but an error occured during saving the config file. Please try again. Error message: " + err
+                        }
+                    });
                 }
-            });
-        }
-    } else {
-        res.render('error', {
-            error: {
-                message: "Ping test error because URL may not be valid. Data not saved."
+            // } else {
+            //     res.render('error', {
+            //         error: {
+            //             message: "Ping test error because URL may not be valid. Data not saved."
+            //         }
+            //     });
+            // } 
+            break;
+        case "1":
+            mapSettings.selectedFields = req.body.fields
+            try{
+                let cfgData = {
+                    loginData,
+                    mapSettings
+                }
+                fs.writeFileSync(config, JSON.stringify(cfgData, null, 4));
+                res.redirect('/');
+            } catch(err) {
+                res.render('error', {
+                    error: {
+                        message: "An error occured during saving the config file. Please try again. Error message: " + err
+                    }
+                });
             }
-        });
+
+
     }
 });
+
 
 module.exports = router;
