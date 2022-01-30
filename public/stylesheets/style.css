@@ -11,6 +11,12 @@ body {
   padding:0px;
   font:14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+#admin {
+  overflow: auto;
+  display: flex;
+  flex-flow: column;
+  height: 90%;
+}
 a {
   color:#00B7FF;
 }

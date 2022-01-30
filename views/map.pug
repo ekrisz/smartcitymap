@@ -1,18 +1,25 @@
 extends menu
 block content
     
-    #map
-    script(type='text/javascript').
-        var map = L.map('map').setView([#{items.latMed},#{items.lonMed}], 14);
-
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-            subdomains: 'abcd',
-            maxZoom: 21
-        }).addTo(map);
-    each item in items.points
+    if `${arraySize}` > 0
+        #map
         script(type='text/javascript').
-        
-            L.circleMarker([!{item.coordinate}]).addTo(map)
-                .bindPopup(!{item.description});
+            var map = L.map('map').setView([#{items.latMed},#{items.lonMed}], 14);
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 21
+            }).addTo(map);
+        each item in items.points
+            script(type='text/javascript').
+            
+                L.circleMarker([!{item.coordinate}]).addTo(map)
+                    .bindPopup(!{item.description});
+    else
+        div(class="container", id="admin")
+            h1 No showable points found
+            div(class="card")
+                div(class="card-body")
+                    h4(class="card-title") Please check whether any points are stored in the database and configured the query correctly. 
                 
