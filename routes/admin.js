@@ -8,6 +8,10 @@ var ping = require('ping');
 let loginData;
 let mapSettings;
 let fields;
+var axios = require('axios');
+const https = require('https');
+
+
 
 router.get('/', function(req, res) {
     try{
@@ -20,6 +24,14 @@ router.get('/', function(req, res) {
                     step: 0
                     });
                 } else {
+                    if(req.query.config == 'query') {
+                        res.render('admin/admin', {
+                            authenticated: req.session.authenticated,
+                            mapSettings,
+                            step: 2,
+                            fields: fields
+                        });
+                    }
                     controller.getAll().then(function(val) {
                         fields = val.data.result.fields;
                         res.render('admin/admin', {
@@ -67,6 +79,10 @@ router.post('/firstrun', async function(req, res) {
             resourceID: null, //'564f9486-26b1-4e54-8328-bb1113566c86',
             limit: null,
             query: null,
+            positionFieldNames: {
+                latitude: null,
+                longitude: null
+            },
             selectedFields: null
         }
     };
@@ -176,6 +192,23 @@ router.post('/save', function (req, res) {
             }
 
 
+    }
+});
+
+router.get('/test', async function(req, res) {
+    var data = {
+        resource_id: "1a46095a-0c7a-4f5a-8e84-030884e130d8"
+    };
+    try{
+        const resp = await axios.get("http://smartme-data.unime.it/api/3/action/datastore_search", {
+            data: data,
+            dataType: 'jsonp'
+        });
+        console.log(resp)
+        res.send(JSON.stringify(resp.data.result.records))
+    } catch(error) {
+        console.log(error);
+        res.send(error);
     }
 });
 

@@ -20,6 +20,7 @@ block content
                 if step === 1
                     h4(class="card-title") Map settings (step 2 of 2)
                     a(href="/admin?config=url", class="btn btn-sm btn-warning") Config the API URL 
+                    a(href="/admin?config=query", class="btn btn-sm btn-warning") Config the query 
                     div(class="card-text")
                         form(action="admin/save", method="post")
                             each field,i in fields 
@@ -28,6 +29,18 @@ block content
                                         input(class="form-check-input", type="checkbox", name="fields", value=`${field.id}`)
                                         label(class="form-check-label", for=`${field.id}`) #{field.id} (#{field.type})
                             input(type="hidden", name="step", value=1)
+                            button(type="submit", class="btn btn-primary") Save
+                if step === 2
+                    h4(class="card-title") Query settings
+                    div(class="card-text")
+                        form(action="admin/save", method="post")
+                            div(class="mb-3 mt-3")
+                                label(for="query", class="form-label") Text contained:
+                                input(type="text", class="form-control", id="query", name="query", placeholder="John Doe", value=`${mapSettings.query}`)
+                            div(class="mb-3 mt-3")
+                                label(for="limit", class="form-label") Query limit (not limited if 0):
+                                input(type="number", class="form-control", name="limit", id="limit", value=`${mapSettings.limit}`, required, min=0, max=9999)
+                            input(type="hidden", name="step", value=2)
                             button(type="submit", class="btn btn-primary") Save
     
         

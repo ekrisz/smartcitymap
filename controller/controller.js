@@ -44,7 +44,6 @@ const dataGet = () => {
               coordinate: element.Latitude + ',' + element.Longitude,
               description: desc
             });
-            // console.log(desc);
             latitudes.push(element.Latitude);
             longitudes.push(element.Longitude);
           }
