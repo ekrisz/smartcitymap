@@ -1,5 +1,5 @@
-var Promise = require('promise');
-var axios = require('axios');
+let Promise = require('promise');
+let axios = require('axios');
 const config = './config.json';
 const fileSystem = require('fs');
 const median = require('median');
@@ -27,17 +27,17 @@ const dataGet = () => {
     let params = "?" + (data.resource_id ? "resource_id=" + data.resource_id : "") + (data.limit ? "&limit=" + data.limit : "") + (data.q ? "&q=" + data.q : "");
     axios.get(mapSettings.url + params)
       .then(function (response) {
-        var records = response.data.result.records;
-        var points = new Array();
-        var latitudes = new Array();
-        var longitudes = new Array();
+        let records = response.data.result.records;
+        let points = new Array();
+        let latitudes = new Array();
+        let longitudes = new Array();
         records.forEach(element => {
-          let desc = "'";
+          let desc = '"';
           if ((element.Latitude != 0 || element.LATITUDE != 0) && (element.Longitude != 0 || element.LONGITUDE != 0)) {
             (mapSettings.selectedFields).map((field) => {
               desc += `<p>` + field + `: ` + element[field] + `</p>`
             })
-            desc += "'";
+            desc += '"';
             if (element.Latitude) {
               points.push({
                 coordinate: element.Latitude + ',' + element.Longitude,
@@ -86,7 +86,7 @@ const getAll = () => {
     } catch (err) {
       reject(err);
     }
-    var data = {
+    let data = {
       resource_id: mapSettings.resourceID,
       limit: mapSettings.limit,
       q: mapSettings.query

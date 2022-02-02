@@ -1,6 +1,6 @@
-var express = require('express');
-var router = express.Router();
-var controller = require('../controller/controller');
+let express = require('express');
+let router = express.Router();
+let controller = require('../controller/controller');
 
 router.get('/', function (req, res) {
     res.redirect('/map');

@@ -1,13 +1,15 @@
-var express = require('express');
+let express = require('express');
 let controller = require('../controller/controller');
-var router = express.Router();
+let router = express.Router();
 const fileSystem = require('fs');
 const config = './config.json';
-var bcrypt = require('bcrypt');
+let bcrypt = require('bcrypt');
 let loginData;
 let mapSettings;
 let fields;
-var axios = require('axios');
+let axios = require('axios');
+const app = require('../app');
+const { time } = require('console');
 
 router.get('/', function (req, res) {
     try {
@@ -63,7 +65,7 @@ router.get('/', function (req, res) {
 })
 
 router.post('/firstrun', async function (req, res) {
-    var cfgData = {
+    let cfgData = {
         loginData: {
             username: null,
             password: null
@@ -193,15 +195,26 @@ router.post('/save', function (req, res) {
     }
 });
 
-router.get('/test', async function (req, res) {
-    var data = {
-        'resource_id': '1a46095a-0c7a-4f5a-8e84-030884e130d8'
-    };
-    axios.get('http://smartme-data.unime.it/api/action/datastore_search', {
-        data: data
-    }).then(function (response) {
-        res.send(response.data);
-    });
+router.get('/uptime', async function (req, res) {
+    function format(seconds){
+        function pad(s){
+          return (s < 10 ? '0' : '') + s;
+        }
+        var hours = Math.floor(seconds / (60*60));
+        var minutes = Math.floor(seconds % (60*60) / 60);
+        var seconds = Math.floor(seconds % 60);
+      
+        return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+      }
+    res.send("System uptime: " + format(process.uptime()));
 });
+
+function error(res, err, message) {
+    res.render('error', {
+        error: {
+            message: "An error occured during saving the config file. Please try again. Error message: " + err
+        }
+    });
+}
 
 module.exports = router;
