@@ -9,6 +9,7 @@ const promMid = require('express-prometheus-middleware');
 
 let indexRouter = require('./routes/index');
 let adminRouter = require('./routes/admin');
+let apiRouter = require('./routes/api.js');
 
 let app = express();
 
@@ -36,6 +37,7 @@ app.use(session({
 
 app.use('/admin', adminRouter);
 app.use('/', indexRouter);
+app.use('/api', apiRouter)
 
 app.use(function(req, res, next) {
   next(createError(404));
