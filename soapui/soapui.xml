@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="602ab3d6-9b4b-4173-a585-c45445a6804b" activeEnvironment="Default" name="szakdolgozat" resourceRoot="" defaultScriptLanguage="Javascript" soapui-version="5.7.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:restMockService id="8e885d38-e332-4b27-9dec-87738e9e3313" port="1111" path="/" host="Krisztian-GG" name="MockResponse" docroot=""><con:settings/><con:properties/><con:restMockAction name="parkingplaces" method="GET" resourcePath="/parkingplaces" id="d7521aa9-a624-420d-b0a9-95f3839fa7c8"><con:settings/><con:defaultResponse>Response 1</con:defaultResponse><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:dispatchPath>/*&#13;
+// Script dispatcher is used to select a response based on the incoming request.&#13;
+// Here are few examples showing how to match based on path, query param, header and body&#13;
+&#13;
+// Match based on path&#13;
+def requestPath = mockRequest.getPath()&#13;
+log.info "Path: "+ requestPath&#13;
+&#13;
+if( requestPath.contains("json") )&#13;
+{&#13;
+    // return the name of the response you want to dispatch&#13;
+    return "JSON Response"&#13;
+}&#13;
+&#13;
+&#13;
+// Match based on query parameter&#13;
+def queryString = mockRequest.getRequest().getQueryString()&#13;
+log.info "QueryString: " + queryString&#13;
+&#13;
+if( queryString.contains("stockholm") )&#13;
+{&#13;
+    // return the name of the response you want to dispatch&#13;
+    return "Response Stockholm"&#13;
+}&#13;
+else if( queryString.contains("london") )&#13;
+{&#13;
+    // return the name of the response you want to dispatch&#13;
+    return "Response London"&#13;
+}&#13;
+&#13;
+&#13;
+// Match based on header&#13;
+def acceptEncodingHeaderList = mockRequest.getRequestHeaders().get("Accept-Encoding")&#13;
+log.info "AcceptEncoding Header List: " + acceptEncodingHeaderList&#13;
+&#13;
+if( acceptEncodingHeaderList.contains("gzip,deflate") )&#13;
+{&#13;
+    // return the name of the response you want to dispatch&#13;
+    return "GZiped Response"&#13;
+}&#13;
+&#13;
+&#13;
+// Match based on body&#13;
+def requestBody = mockRequest.getRequestContent()&#13;
+log.info "Request body: " + requestBody&#13;
+&#13;
+if( requestBody.contains("some data") )&#13;
+{&#13;
+    // return the name of the response you want to dispatch&#13;
+    return "Response N"&#13;
+}&#13;
+*/&#13;
+</con:dispatchPath><con:response name="Response 1" id="7ec8f3e8-75a9-4877-a980-e7fe076958e0" httpResponseStatus="200" mediaType="application/json"><con:settings/><con:responseContent>{
+    "success": true,
+    "result": {
+        "include_total": true,
+        "fields": [{
+                "type": "int",
+                "id": "ID"
+            }, {
+                "type": "numeric",
+                "id": "Address"
+            }, {
+                "type": "numeric",
+                "id": "Maximum capacity"
+            }, {
+                "type": "numeric",
+                "id": "Current free places"
+            }, {
+                "type": "numeric",
+                "id": "Average free places"
+            }, {
+                "type": "numeric",
+                "id": "Latitude"
+            }, {
+                "type": "numeric",
+                "id": "Longitude"
+            }
+        ],
+        "records_format": "objects",
+        "records": [{
+                "ID": 1,
+                "Address": "Szeged, Széchenyi tér",
+                "Maximum capacity": 20,
+                "Current free places": 2,
+                "Average free places": 6,
+                "Longitude": 20.149540,
+                "Latitude": 46.253187
+            }, {
+                "ID": 2,
+                "Address": "Szeged, Jókai utca (Nagyáruház)",
+                "Maximum capacity": 8,
+                "Current free places": 1,
+                "Average free places": 3,
+                "Longitude": 20.146439,
+                "Latitude": 46.248951
+            }, {
+                "ID": 3,
+                "Address": "Szeged, Reirrich Béla tér",
+                "Maximum capacity": 23,
+                "Current free places": 9,
+                "Average free places": 1,
+                "Longitude": 20.147952,
+                "Latitude": 46.247356
+            }, {
+                "ID": 4,
+                "Address": "Szeged, TIK",
+                "Maximum capacity": 86,
+                "Current free places": 49,
+                "Average free places": 16,
+                "Longitude": 20.141949,
+                "Latitude": 46.247004
+            }, {
+                "ID": 5,
+                "Address": "Szeged, Napfény Park",
+                "Maximum capacity": 150,
+                "Current free places": 101,
+                "Average free places": 44,
+                "Longitude": 20.121369,
+                "Latitude": 46.242789
+            }, {
+                "ID": 6,
+                "Address": "Szeged, Mömax",
+                "Maximum capacity": 36,
+                "Current free places": 8,
+                "Average free places": 11,
+                "Longitude": 20.122546,
+                "Latitude": 46.252167
+            }, {
+                "ID": 7,
+                "Address": "Szeged, Tesco Extra",
+                "Maximum capacity": 200,
+                "Current free places": 67,
+                "Average free places": 111,
+                "Longitude": 20.139087,
+                "Latitude": 46.268664
+            }
+        ]
+    }
+}</con:responseContent><con:header><con:name>Content-Type</con:name><con:value>charset=utf-8</con:value></con:header></con:response></con:restMockAction></con:restMockService><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:sensitiveInformation/></con:soapui-project>

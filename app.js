@@ -5,6 +5,7 @@ let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 let session = require('express-session');
 let expressMetrics = require('express-metrics');
+const promMid = require('express-prometheus-middleware');
 
 let indexRouter = require('./routes/index');
 let adminRouter = require('./routes/admin');
@@ -14,8 +15,12 @@ let app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(expressMetrics({
-  port: 8091
+app.use(promMid({
+  metricsPath: '/metrics',
+  collectDefaultMetrics: true,
+  requestDurationBuckets: [0.1, 0.5, 1, 1.5],
+  requestLengthBuckets: [512, 1024, 5120, 10240, 51200, 102400],
+  responseLengthBuckets: [512, 1024, 5120, 10240, 51200, 102400],
 }));
 app.use(logger('dev'));
 app.use(express.json());

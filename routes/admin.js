@@ -30,22 +30,25 @@ router.get('/', function (req, res) {
                             fields: fields
                         });
                     }
-                    controller.getAll().then(function (val) {
-                        fields = val.data.result.fields;
-                        res.render('admin/admin', {
-                            authenticated: req.session.authenticated,
-                            mapSettings,
-                            step: 1,
-                            fields: fields,
-                            selectedFields: mapSettings.selectedFields
+                    // after step 0
+                    controller.getAll()
+                        .then(function (val) {
+                            fields = val.data.result.fields;
+                            res.render('admin/admin', {
+                                authenticated: req.session.authenticated,
+                                mapSettings,
+                                step: 1,
+                                fields: fields,
+                                selectedFields: mapSettings.selectedFields
+                            });
+                        }).catch(function (error) {
+                            res.render('admin/admin', {
+                                authenticated: req.session.authenticated,
+                                mapSettings,
+                                step: 0,
+                                error: error
+                            });
                         });
-                    }, function (error) {
-                        res.render('error', {
-                            error: {
-                                message: error
-                            }
-                        });
-                    });
                 }
             } else {
                 res.render('admin/login', {
@@ -160,7 +163,7 @@ router.post('/save', function (req, res) {
             }
             break;
         case "1":
-            mapSettings.selectedFields = req.body.fields
+            mapSettings.selectedFields = req.body.fields;
             try {
                 let cfgData = {
                     loginData,
@@ -196,16 +199,16 @@ router.post('/save', function (req, res) {
 });
 
 router.get('/uptime', async function (req, res) {
-    function format(seconds){
-        function pad(s){
-          return (s < 10 ? '0' : '') + s;
+    function format(seconds) {
+        function pad(s) {
+            return (s < 10 ? '0' : '') + s;
         }
-        var hours = Math.floor(seconds / (60*60));
-        var minutes = Math.floor(seconds % (60*60) / 60);
+        var hours = Math.floor(seconds / (60 * 60));
+        var minutes = Math.floor(seconds % (60 * 60) / 60);
         var seconds = Math.floor(seconds % 60);
-      
+
         return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
-      }
+    }
     res.send("System uptime: " + format(process.uptime()));
 });
 

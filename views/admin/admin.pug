@@ -3,6 +3,10 @@ block content
     div(class="container", id="admin")
         h1 Admin page
         p Be careful, this is the admin page
+        if error
+            div(class="alert alert-danger").
+                <strong>Something went wrong</strong><br>
+                #{error}
         div(class="card")
             div(class="card-body")
                 if step === 0
@@ -11,14 +15,17 @@ block content
                         form(action="admin/save", method="post")
                             div(class="mb-3 mt-3")
                                 label(for="url", class="form-label") API URL:
-                                input(type="url", class="form-control", id="url", name="url", placeholder="e.g. https://example.com/api/v1/get", required, pattern="(http|https):\/\/.*", value=`${mapSettings.url}`)
-                            div(class="mb-3 mt-3")
-                                label(for="resourceID", class="form-label") Resource ID: 
-                                input(type="text", class="form-control", name="resourceID", id="resourceID", placeholder="e.g. 564f9486-26b1-4e54-8328-bb1113566c86", value=`${mapSettings.resourceID}`, required)
+                                select(name="url", class="form-control", id="editableSelect", placeholder="Select a sample URL or paste yours")
+                                    option(value="Placeholder") http://smartme-data.unime.it/api/action/datastore_search?resource_id=1a46095a-0c7a-4f5a-8e84-030884e130d8
+                                    option() https://data.smartdublin.ie/api/3/action/datastore_search?resource_id=9496fac5-e4d7-4ae9-a49a-217c7c4e83d9
+                                    option() https://data.smartdublin.ie/api/3/action/datastore_search?resource_id=2dec86ed-76ed-47a3-ae28-646db5c5b965
+                                    option() http://localhost:1111/parkingplaces
+                            
                             input(type="hidden", name="step", value=0)
                             button(type="submit", class="btn btn-primary") Next
                 if step === 1
                     h4(class="card-title") Map settings (step 2 of 2)
+                    div(class="alert alert-warning", id="minCheckboxWarning", role="alert") You must select at least 2 fields!
                     a(href="/admin?config=url", class="btn btn-sm btn-warning") Config the API URL 
                     a(href="/admin?config=query", class="btn btn-sm btn-warning") Config the query 
                     div(class="card-text")
@@ -34,9 +41,10 @@ block content
                                     label(class="form-check-label", for=`${field.id}`) #{field.id} (#{field.type})
                             - }
                             input(type="hidden", name="step", value=1)
-                            button(type="submit", class="btn btn-primary") Save
+                            button(type="submit", id="saveButton", class="btn btn-primary") Save
                 if step === 2
                     h4(class="card-title") Query settings
+                    div(class="alert alert-warning", id="minCheckboxWarning", role="alert") Not every endpoints support custom queries!
                     div(class="card-text")
                         form(action="admin/save", method="post")
                             div(class="mb-3 mt-3")

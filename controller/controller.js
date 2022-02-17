@@ -25,7 +25,7 @@ const dataGet = () => {
       q: mapSettings.query
     };
     let params = "?" + (data.resource_id ? "resource_id=" + data.resource_id : "") + (data.limit ? "&limit=" + data.limit : "") + (data.q ? "&q=" + data.q : "");
-    axios.get(mapSettings.url + params)
+    axios.get(mapSettings.url)
       .then(function (response) {
         let records = response.data.result.records;
         let points = new Array();
@@ -34,7 +34,7 @@ const dataGet = () => {
         records.forEach(element => {
           let desc = '"';
           if ((element.Latitude != 0 || element.LATITUDE != 0) && (element.Longitude != 0 || element.LONGITUDE != 0)) {
-            (mapSettings.selectedFields).map((field) => {
+            mapSettings.selectedFields.map((field) => {
               desc += `<p>` + field + `: ` + element[field] + `</p>`
             })
             desc += '"';
@@ -66,6 +66,7 @@ const dataGet = () => {
         resolve(result);
       })
       .catch(function (error) {
+        console.log(error);
         reject(error);
       });
   });
@@ -92,7 +93,7 @@ const getAll = () => {
       q: mapSettings.query
     };
     let params = "?" + (data.resource_id ? "resource_id=" + data.resource_id : "") + (data.limit ? "&limit=" + data.limit : "") + (data.q ? "&q=" + data.q : "");
-    axios.get(mapSettings.url + params)
+    axios.get(mapSettings.url)
       .then(function (response) {
         resolve(response);
       })

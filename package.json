@@ -14,8 +14,10 @@
     "debug": "~2.6.9",
     "express": "^4.17.2",
     "express-metrics": "^1.1.0",
+    "express-prometheus-middleware": "^1.2.0",
     "express-session": "^1.17.2",
     "http-errors": "~1.6.2",
+    "jquery-editable-select": "^2.2.5",
     "median": "^0.0.2",
     "morgan": "^1.10.0",
     "pug": "2.0.0-beta11"
