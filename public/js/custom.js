@@ -60,5 +60,9 @@ $(document).ready(function (){
     });
     if(window.location.pathname.endsWith("admin")) {
         $("#showHideButton").hide();
+        $("#upTime").load("/admin/uptime");
+        setInterval(function() {
+            $("#upTime").load("/admin/uptime");
+        }, 1000)        
     }
 });
