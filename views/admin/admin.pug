@@ -29,8 +29,6 @@ block content
                     a(href="/admin?config=url", class="btn btn-sm btn-warning") Config the API URL 
                     a(href="/admin?config=query", class="btn btn-sm btn-warning") Config the query 
                     a(href="/admin/exportConfig", class="btn btn-sm btn-info") Export config file 
-                    a(href="/admin/uptime", class="btn btn-sm btn-success") Server uptime 
-
                     div(class="card-text")
                         form(action="admin/save", method="post")
                             - for(const field of fields) {
