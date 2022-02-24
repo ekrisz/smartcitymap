@@ -212,6 +212,14 @@ router.get('/uptime', async function (req, res) {
     res.send("System uptime: " + format(process.uptime()));
 });
 
+router.get('/exportConfig', function (req, res, next) {
+    res.set({
+        'Location': "/admin"
+    });
+    const file = `${__dirname}/../config.json`;
+    res.download(file);
+});
+
 function error(res, err, message) {
     res.render('error', {
         error: {
