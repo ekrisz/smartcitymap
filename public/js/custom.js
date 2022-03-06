@@ -1,10 +1,15 @@
 $(document).ready(function (){
     $(function() {
-        setTimeout(function(e) {
+        let timer = setTimeout(function(e) {
             $("#otherDiv").hide();
             $("#showHideButton a").text("Show sidebar");
+            $("path").on('dblclick', function(event) {
+            });
         }, 5000);
         $("#saveButton").prop("disabled", true);
+        $("path").on('dblclick', function(event) {
+            clearInterval(timer);
+        });
     });
     $("path").mousedown(function(event) {
         switch(event.which) {

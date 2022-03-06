@@ -20,6 +20,8 @@
     "jquery-editable-select": "^2.2.5",
     "median": "^0.0.2",
     "morgan": "^1.10.0",
-    "pug": "2.0.0-beta11"
+    "pug": "2.0.0-beta11",
+    "random-latitude": "^1.0.1",
+    "random-longitude": "^1.0.1"
   }
 }

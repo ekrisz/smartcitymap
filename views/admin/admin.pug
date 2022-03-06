@@ -29,6 +29,7 @@ block content
                     a(href="/admin?config=url", class="btn btn-sm btn-warning") Config the API URL 
                     a(href="/admin?config=query", class="btn btn-sm btn-warning") Config the query 
                     a(href="/admin/exportConfig", class="btn btn-sm btn-info") Export config file 
+                    a(href="/admin?config=coordGen", class="btn btn-sm btn-success") Configure coordinate generator
                     div(class="card-text")
                         form(action="admin/save", method="post")
                             - for(const field of fields) {
@@ -55,6 +56,38 @@ block content
                                 label(for="limit", class="form-label") Query limit (not limited if 0): <b>[May less points will appear on the map because points with null longitudes and latitudes are not displayed]</b>
                                 input(type="number", class="form-control", name="limit", id="limit", value=`${mapSettings.limit}`, placeholder="e.g. 50")
                             input(type="hidden", name="step", value=2)
+                            button(type="submit", class="btn btn-primary") Save
+                if coordGen
+                    h4(class="card-title") Coordinates generator configuration
+                    div(class="alert alert-default", role="alert") You can reach this endpoint on: <a href="#{url}">#{url}</a>
+                    div(class="card-text")
+                        form(action="admin/save", method="post")
+                            div(class="mb-3 mt-3")
+                                label(for="query", class="form-label") Number of generated coordinates:
+                                input(type="number", min="1", max="1000000", required, class="form-control", id="numberOfCoords", name="numberOfCoords", placeholder="200", value=`${mapSettings.generatorValues.numberOfCoords}`)
+                            div(class="mb-3 mt-3")
+                                label(for="query", class="form-label") Minimum latitude:
+                                input(type="number", class="form-control", step="0.000001", required, id="minLat", name="minLatitude", placeholder="46.223415", value=`${mapSettings.generatorValues.minLatitude}`)
+                            div(class="mb-3 mt-3")
+                                label(for="query", class="form-label") Maximum latitude:
+                                input(type="number", class="form-control", step="0.000001", required, id="maxLat", name="maxLatitude", placeholder="46.288222", value=`${mapSettings.generatorValues.maxLatitude}`)
+                            div(class="mb-3 mt-3")
+                                label(for="query", class="form-label") Minimum longitude:
+                                input(type="number", class="form-control", step="0.000001", required, id="minLong", name="minLongitude", placeholder="20.132668", value=`${mapSettings.generatorValues.minLongitude}`)
+                            div(class="mb-3 mt-3")
+                                label(for="query", class="form-label") Maximum longitude:
+                                input(type="number", class="form-control", step="0.000001", required, id="maxLong", name="maxLongitude", placeholder="20.189698", value=`${mapSettings.generatorValues.maxLongitude}`)
+                            div(class="d-flex flex-row justify-content-around")
+                                div(class="p-4 w-100")
+                                    label(for="query", class="form-label") Custom key:
+                                    input(type="text", class="form-control", id="customKey", name="customKey", placeholder="Custom key field", value=`${mapSettings.generatorValues.customField.name}`)
+                                div(class="p-4 w-100")
+                                    label(for="query", class="form-label") Custom min value:
+                                    input(type="number", min="0", max="999999", step="1", class="form-control", id="customMinValue", name="customMinValue", placeholder="Custom min value", value=`${mapSettings.generatorValues.customField.min}`)
+                                div(class="p-4 w-100")
+                                    label(for="query", class="form-label") Custom max value:
+                                    input(type="number", min="0", max="999999", step="1", class="form-control", id="customMaxValue", name="customMaxValue", placeholder="Custom max value", value=`${mapSettings.generatorValues.customField.max}`)
+                            input(type="hidden", name="coordGen", value="true")
                             button(type="submit", class="btn btn-primary") Save
     
         

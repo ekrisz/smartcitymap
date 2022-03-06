@@ -7,9 +7,6 @@ let bcrypt = require('bcrypt');
 let loginData;
 let mapSettings;
 let fields;
-let axios = require('axios');
-const app = require('../app');
-const { time } = require('console');
 
 router.get('/', function (req, res) {
     try {
@@ -49,6 +46,14 @@ router.get('/', function (req, res) {
                                 error: error
                             });
                         });
+                    if(req.query.config == 'coordGen'){
+                        res.render('admin/admin', {
+                            authenticated: req.session.authenticated,
+                            mapSettings,
+                            coordGen: true,
+                            url: req.protocol + "://" + req.get('host') + "/api/generate-random-coords"
+                        });
+                    }
                 }
             } else {
                 res.render('admin/login', {
@@ -82,7 +87,19 @@ router.post('/firstrun', async function (req, res) {
                 latitude: null,
                 longitude: null
             },
-            selectedFields: null
+            selectedFields: null,
+            generatorValues: {
+                numberOfCoords: 1,
+                minLatitude: 0,
+                maxLatitude: 0,
+                minLongitude: 0,
+                maxLongitude: 0,
+                customField: {
+                    name: null,
+                    min: null,
+                    max: null
+                }
+            }
         }
     };
     const salt = await bcrypt.genSalt(10);
@@ -178,6 +195,7 @@ router.post('/save', function (req, res) {
                     }
                 });
             }
+            break;
         case "2":
             mapSettings.query = (req.body.query === undefined ? "" : req.body.query);
             mapSettings.limit = (req.body.limit === undefined ? "" : req.body.limit);
@@ -194,6 +212,41 @@ router.post('/save', function (req, res) {
                         message: "An error occured during saving the config file. Please try again. Error message: " + err
                     }
                 });
+            }
+            break;
+        default:
+            if(req.body.coordGen == "true") {
+                let customKey = req.body.customKey;
+                let customMinVal = req.body.customMinValue;
+                let customMaxVal = req.body.customMaxValue;
+                mapSettings.generatorValues.numberOfCoords = (req.body.numberOfCoords === undefined ? 1 : req.body.numberOfCoords);
+                mapSettings.generatorValues.minLatitude = (req.body.minLatitude === undefined ? 0 : req.body.minLatitude);
+                mapSettings.generatorValues.maxLatitude = (req.body.maxLatitude === undefined ? 0 : req.body.maxLatitude);
+                mapSettings.generatorValues.minLongitude = (req.body.minLongitude === undefined ? 0 : req.body.minLongitude);
+                mapSettings.generatorValues.maxLongitude = (req.body.maxLongitude === undefined ? 0 : req.body.maxLongitude);
+                mapSettings.generatorValues = {
+                    ...mapSettings.generatorValues,
+                    customField : {
+                        name: customKey,
+                        min: customMinVal,
+                        max: customMaxVal
+                    }
+                }      
+                console.log(mapSettings);
+                try {
+                    let cfgData = {
+                        loginData,
+                        mapSettings
+                    }
+                    fileSystem.writeFileSync(config, JSON.stringify(cfgData, null, 4));
+                    res.redirect('/admin');
+                } catch (err) {
+                    res.render('error', {
+                        error: {
+                            message: "An error occured during saving the config file. Please try again. Error message: " + err
+                        }
+                    });
+                }
             }
     }
 });
