@@ -64,7 +64,7 @@ router.get('/generate-random-coords', function(req, res) {
     }
     jsonResponse.result.records.push(response);
   }
-  if(generatorValues.customField.name != null && generatorValues.customField.min != null && generatorValues.customField.max != null){
+  if(generatorValues.customField.name != "" && generatorValues.customField.min != "" && generatorValues.customField.max != ""){
     jsonResponse.result.fields.push({
       "type": "int",
       "id": customFieldKey

@@ -90,11 +90,11 @@ router.post('/firstrun', async function (req, res) {
             },
             selectedFields: null,
             generatorValues: {
-                numberOfCoords: 1,
-                minLatitude: 0,
-                maxLatitude: 0,
-                minLongitude: 0,
-                maxLongitude: 0,
+                numberOfCoords: 20,
+                minLatitude: 46.223415,
+                maxLatitude: 46.288222,
+                minLongitude: 20.132668,
+                maxLongitude: 20.189698,
                 customField: {
                     name: "",
                     min: "",
