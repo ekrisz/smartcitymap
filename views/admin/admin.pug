@@ -16,6 +16,7 @@ block content
                             div(class="mb-3 mt-3")
                                 label(for="url", class="form-label") API URL:
                                 select(name="url", class="form-control", id="editableSelect", placeholder="Select a sample URL or paste yours")
+                                    option() #{url}
                                     option() https://smartcitymap.herokuapp.com/api/sample-endpoint
                                     option() http://localhost:1111/parkingplaces
                                     option() http://smartme-data.unime.it/api/action/datastore_search?resource_id=1a46095a-0c7a-4f5a-8e84-030884e130d8

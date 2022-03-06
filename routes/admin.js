@@ -16,7 +16,8 @@ router.get('/', function (req, res) {
                     res.render('admin/admin', {
                         authenticated: req.session.authenticated,
                         mapSettings,
-                        step: 0
+                        step: 0,
+                        url: req.protocol + "://" + req.get('host') + "/api/generate-random-coords"
                     });
                 } else {
                     if (req.query.config == 'query') {
