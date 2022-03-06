@@ -96,9 +96,9 @@ router.post('/firstrun', async function (req, res) {
                 minLongitude: 0,
                 maxLongitude: 0,
                 customField: {
-                    name: null,
-                    min: null,
-                    max: null
+                    name: "",
+                    min: "",
+                    max: ""
                 }
             }
         }

@@ -55,7 +55,7 @@ router.get('/generate-random-coords', function(req, res) {
       "Latitude": randomLatitude({min: parseFloat(generatorValues.minLatitude), max: parseFloat(generatorValues.maxLatitude)}),
       "Longitude": randomLongitude({min: parseFloat(generatorValues.minLongitude), max: parseFloat(generatorValues.maxLongitude)})
     };
-    if(generatorValues.customField.name != null && generatorValues.customField.min != null && generatorValues.customField.max != null) {
+    if(generatorValues.customField.name != "" && generatorValues.customField.min != "" && generatorValues.customField.max != "") {
       customFieldValue = Math.floor(Math.random() * generatorValues.customField.max + generatorValues.customField.min);
       response = {
         ...response,
