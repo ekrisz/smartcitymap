@@ -7,7 +7,7 @@ const config = './config.json';
 let generatorValues;
 
 router.get('/sample-endpoint', function(req, res, next) {
-  const data = require('../soapui/sample.json');
+  const data = require('../sample.json');
   res.json(data);
 });
 
