@@ -80,8 +80,8 @@ router.post('/firstrun', async function (req, res) {
             password: null
         },
         mapSettings: {
-            url: null, //'https://data.smartdublin.ie/api/3/action/datastore_search',
-            resourceID: null, //'564f9486-26b1-4e54-8328-bb1113566c86',
+            url: null,
+            resourceID: null,
             limit: null,
             query: null,
             positionFieldNames: {
@@ -273,13 +273,5 @@ router.get('/exportConfig', function (req, res, next) {
     const file = `${__dirname}/../config.json`;
     res.download(file);
 });
-
-function error(res, err, message) {
-    res.render('error', {
-        error: {
-            message: "An error occured during saving the config file. Please try again. Error message: " + err
-        }
-    });
-}
 
 module.exports = router;

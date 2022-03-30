@@ -5,7 +5,7 @@ const fileSystem = require('fs');
 const median = require('median');
 
 const dataGet = () => {
-  return new Promise(function (resolve, reject) {
+  return new Promise(async function (resolve, reject) {
     let mapSettings = null;
     try {
       if (fileSystem.existsSync(config)) {
@@ -24,8 +24,8 @@ const dataGet = () => {
       limit: mapSettings.limit,
       q: mapSettings.query
     };
-    let params = "?" + (data.resource_id ? "resource_id=" + data.resource_id : "") + (data.limit ? "&limit=" + data.limit : "") + (data.q ? "&q=" + data.q : "");
-    axios.get(mapSettings.url)
+    let params = (mapSettings.url.indexOf("?") >= 0 ? "" : "?") + (data.limit ? "&limit=" + data.limit : "") + (data.q ? "&q=" + data.q : "");
+    await axios.get(mapSettings.url + params)
       .then(function (response) {
         let records = response.data.result.records;
         let points = new Array();
@@ -63,6 +63,7 @@ const dataGet = () => {
           "lonMed": lonMed,
           "points": points
         }
+        console.log(mapSettings.url + params);
         resolve(result);
       })
       .catch(function (error) {
@@ -73,7 +74,7 @@ const dataGet = () => {
 }
 
 const getAll = () => {
-  return new Promise(function (resolve, reject) {
+  return new Promise(async function (resolve, reject) {
     let mapSettings = null;
     try {
       if (fileSystem.existsSync(config)) {
@@ -92,9 +93,10 @@ const getAll = () => {
       limit: mapSettings.limit,
       q: mapSettings.query
     };
-    let params = "?" + (data.resource_id ? "resource_id=" + data.resource_id : "") + (data.limit ? "&limit=" + data.limit : "") + (data.q ? "&q=" + data.q : "");
-    axios.get(mapSettings.url)
+    let params = (mapSettings.url.indexOf("?") >= 0 ? "" : "?") + (data.limit ? "&limit=" + data.limit : "") + (data.q ? "&q=" + data.q : "");
+    await axios.get(mapSettings.url + params)
       .then(function (response) {
+        console.log(mapSettings.url + params);
         resolve(response);
       })
       .catch(function (error) {

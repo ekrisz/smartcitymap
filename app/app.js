@@ -4,7 +4,6 @@ let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 let session = require('express-session');
-let expressMetrics = require('express-metrics');
 const promMid = require('express-prometheus-middleware');
 
 let indexRouter = require('./routes/index');

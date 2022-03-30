@@ -24,7 +24,6 @@ router.get('/generate-random-coords', function(req, res) {
           }
       });
   }
-  console.log(generatorValues);
   let jsonResponse = {
     "success": true,
     result: {
@@ -71,6 +70,19 @@ router.get('/generate-random-coords', function(req, res) {
     });
   }
   res.json(jsonResponse);
-})
+});
+
+router.get('/config', function(req, res) {
+  try {
+    const loadedConfig = JSON.parse(fileSystem.readFileSync(config));
+    res.send(loadedConfig.mapSettings.generatorValues)
+  } catch (err) {
+      response.render('error', {
+          error: {
+              message: err
+          }
+      });
+    }
+  });
 
 module.exports = router;
