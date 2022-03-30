@@ -1,0 +1,27 @@
+{
+  "name": "szakdolgozat",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www --ignore config.json"
+  },
+  "dependencies": {
+    "axios": "^0.25.0",
+    "bcrypt": "^5.0.1",
+    "bootstrap": "^5.1.3",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "^4.17.2",
+    "express-metrics": "^1.1.0",
+    "express-prometheus-middleware": "^1.2.0",
+    "express-session": "^1.17.2",
+    "http-errors": "~1.6.2",
+    "jquery-editable-select": "^2.2.5",
+    "median": "^0.0.2",
+    "morgan": "^1.10.0",
+    "pug": "2.0.0-beta11",
+    "random-latitude": "^1.0.1",
+    "random-longitude": "^1.0.1"
+  }
+}

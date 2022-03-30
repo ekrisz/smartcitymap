@@ -1,0 +1,19 @@
+extends ../layout 
+block content 
+    div(class="m-3 card p-2")
+        div(class="mb-4 py-5 px-3 w-100 bg-warning text-black rounded")
+            h1(class="mb-5") First run page 
+            h4 You see this page because the application is not configured yet.
+            h6 Please choose a username and a password for the admin user and do not forget it.
+        div(class="card")
+            div(class="card-body")
+                h4(class="card-title") Admin user configuration
+                div(class="card-text")
+                    form(action="admin/firstrun", method="post")
+                        div(class="form-floating mb-3 mt-3")
+                            input(class="form-control", type="text", name="username", required, placeholder="Enter admin username")
+                            label(for="username") Username
+                        div(class="form-floating mb-3 mt-3")
+                            input(class="form-control", type="password", name="password", required, placeholder="Enter admin password") 
+                            label(for="password") Password
+                        input(class="btn btn-success", type="submit", value="Save")

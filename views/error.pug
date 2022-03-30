@@ -1,0 +1,7 @@
+extends menu
+
+block content
+  div(class="alert alert-danger").
+    <strong>Something went wrong</strong><br>
+    #{error.message}
+  button(onclick="window.history.back()", class="btn btn-primary") Go back

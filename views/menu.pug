@@ -1,0 +1,19 @@
+extends layout
+
+block menu 
+    nav(class="navbar navbar-expand-sm bg-dark navbar-dark", id="menu")
+        div(class="container-fluid")
+            a(class="navbar-brand", href="/") SmartCityMap 
+            button(class="navbar-toggler", type="button", data-bs-toggle="collapse", data-bs-target="#collapsibleNavbar")
+                span(class="navbar-toggler-icon")
+            div(class="collapse navbar-collapse", id="collapsibleNavbar")
+                ul(class="navbar-nav")
+                    li(class="nav-item")
+                        a(class="nav-link", href="/admin") Admin
+                    if authenticated === true 
+                        li(class="nav-item")
+                            a(class="nav-link", href="/admin/logout") Logout
+                    li(class="nav-item")
+                        a(class="nav-link", id="upTime")
+                    li(class="nav-item", id="showHideButton")
+                        a(class="nav-link", href="#") Hide sidebar
