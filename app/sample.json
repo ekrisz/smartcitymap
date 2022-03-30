@@ -1,0 +1,88 @@
+{
+    "success": true,
+    "result": {
+        "include_total": true,
+        "fields": [{
+                "type": "int",
+                "id": "ID"
+            }, {
+                "type": "numeric",
+                "id": "Address"
+            }, {
+                "type": "numeric",
+                "id": "Maximum capacity"
+            }, {
+                "type": "numeric",
+                "id": "Current free places"
+            }, {
+                "type": "numeric",
+                "id": "Average free places"
+            }, {
+                "type": "numeric",
+                "id": "Latitude"
+            }, {
+                "type": "numeric",
+                "id": "Longitude"
+            }
+        ],
+        "records_format": "objects",
+        "records": [{
+                "ID": 1,
+                "Address": "Szeged, Széchenyi tér",
+                "Maximum capacity": 20,
+                "Current free places": 2,
+                "Average free places": 6,
+                "Longitude": 20.149540,
+                "Latitude": 46.253187
+            }, {
+                "ID": 2,
+                "Address": "Szeged, Jókai utca (Nagyáruház)",
+                "Maximum capacity": 8,
+                "Current free places": 1,
+                "Average free places": 3,
+                "Longitude": 20.146439,
+                "Latitude": 46.248951
+            }, {
+                "ID": 3,
+                "Address": "Szeged, Reirrich Béla tér",
+                "Maximum capacity": 23,
+                "Current free places": 9,
+                "Average free places": 1,
+                "Longitude": 20.147952,
+                "Latitude": 46.247356
+            }, {
+                "ID": 4,
+                "Address": "Szeged, TIK",
+                "Maximum capacity": 86,
+                "Current free places": 49,
+                "Average free places": 16,
+                "Longitude": 20.141949,
+                "Latitude": 46.247004
+            }, {
+                "ID": 5,
+                "Address": "Szeged, Napfény Park",
+                "Maximum capacity": 150,
+                "Current free places": 101,
+                "Average free places": 44,
+                "Longitude": 20.121369,
+                "Latitude": 46.242789
+            }, {
+                "ID": 6,
+                "Address": "Szeged, Mömax",
+                "Maximum capacity": 36,
+                "Current free places": 8,
+                "Average free places": 11,
+                "Longitude": 20.122546,
+                "Latitude": 46.252167
+            }, {
+                "ID": 7,
+                "Address": "Szeged, Tesco Extra",
+                "Maximum capacity": 200,
+                "Current free places": 67,
+                "Average free places": 111,
+                "Longitude": 20.139087,
+                "Latitude": 46.268664
+            }
+        ]
+    }
+}
