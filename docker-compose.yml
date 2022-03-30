@@ -1,0 +1,45 @@
+version: '1'
+
+name: smartcitymap
+
+services:
+    app:
+        container_name: 'app'
+        image: 'smartcitymap:latest'
+        build:
+              dockerfile: ${PWD}/app/Dockerfile
+              context: ${PWD}/app
+        ports:
+            - 3000:3000
+        links:
+            - mock
+        restart: on-failure
+    soapui:
+        container_name: 'mock'
+        image: 'soapui:latest'
+        build:
+            dockerfile: ${PWD}/soapui/Dockerfile
+        ports:
+            - 7080:7080
+        restart: on-failure
+    coordgen:
+        container_name: 'coordgen'
+        build:
+              dockerfile: ${PWD}/coordgen/Dockerfile
+              context: ${PWD}/coordgen
+        ports:
+            - 2000:2000
+        restart: on-failure
+    prometheus:
+        container_name: 'prometheus'
+        image: prom/prometheus:v2.21.0
+        ports:
+            - 9000:9090
+        volumes:
+            - ./prometheus:/etc/prometheus
+            - prometheus-data:/prometheus
+        command: --web.enable-lifecycle  --config.file=/etc/prometheus/prometheus.yml
+        restart: on-failure
+                 
+volumes:
+  prometheus-data:
