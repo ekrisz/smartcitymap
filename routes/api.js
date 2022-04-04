@@ -12,8 +12,6 @@ router.get('/sample-endpoint', function(req, res, next) {
 });
 
 router.get('/generate-random-coords', function(req, res) {
-  let longitudes = new Array();
-  let latitudes = new Array();
   try {
     const loadedConfig = JSON.parse(fileSystem.readFileSync(config));
     generatorValues = loadedConfig.mapSettings.generatorValues;
@@ -75,7 +73,7 @@ router.get('/generate-random-coords', function(req, res) {
 router.get('/config', function(req, res) {
   try {
     const loadedConfig = JSON.parse(fileSystem.readFileSync(config));
-    res.send(loadedConfig.mapSettings.generatorValues)
+    res.json(loadedConfig.mapSettings.generatorValues)
   } catch (err) {
       response.render('error', {
           error: {
