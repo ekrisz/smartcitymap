@@ -11,33 +11,39 @@ router.get('/', function (req, res) {
 router.get('/map', function (req, res) {
     try {
         if (fileSystem.existsSync(config)) {
-            controller.dataGet()
-                .then(
-                    function (val) {
-                        res.render('map', {
-                            title: "SmartCityMap",
-                            items: val,
-                            arraySize: val.points.length,
-                            authenticated: req.session.authenticated
-                        });
-                    },
-                    function (error) {
-                        if (error === null) {
-                            res.redirect('/admin');
-                        } else {
-                            res.render('error', {
-                                "error": error
+            const loadedConfig = JSON.parse(fileSystem.readFileSync(config));
+            mapSettings = loadedConfig.mapSettings;
+            if(mapSettings.selectedFields != null){
+                controller.dataGet()
+                    .then(
+                        function (val) {
+                            res.render('map', {
+                                title: "SmartCityMap",
+                                items: val,
+                                arraySize: val.points.length,
+                                authenticated: req.session.authenticated
                             });
+                        },
+                        function (error) {
+                            if (error === null) {
+                                res.redirect('/admin');
+                            } else {
+                                res.render('error', {
+                                    "error": "You may have to configure the application. Go to admin page. Error: " + error
+                                });
+                            }
                         }
-                    }
-                );
+                    );
+            } else {
+                res.redirect('/admin');
+            }
         } else {
             res.redirect('/admin');
         }
     } catch (err) {
         response.render('error', {
             error: {
-                message: err
+                message: "You may have to configure the application. Go to admin page. Error: " + err
             }
         });
     }

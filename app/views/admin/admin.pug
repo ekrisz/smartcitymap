@@ -18,8 +18,11 @@ block content
                                 select(name="url", class="form-control", id="editableSelect", placeholder="Select a sample URL or paste yours")
                                     option() #{url}
                                     option() http://coordgen:2000/api/generate-random-coords
-                                    option() https://smartcitymap.herokuapp.com/api/sample-endpoint
                                     option() http://mock:7080/parkingplaces
+                                    option() https://smartcitymap.herokuapp.com/api/generate-random-coords
+                                    option() https://smartcitymap.herokuapp.com/api/sample-endpoint
+                                    option() http://localhost:3000/api/generate-random-coords
+                                    option() http://localhost:3000/api/sample-endpoint
                                     option() http://smartme-data.unime.it/api/action/datastore_search?resource_id=1a46095a-0c7a-4f5a-8e84-030884e130d8
                                     option() https://data.smartdublin.ie/api/3/action/datastore_search?resource_id=9496fac5-e4d7-4ae9-a49a-217c7c4e83d9
                                     option() https://data.smartdublin.ie/api/3/action/datastore_search?resource_id=2dec86ed-76ed-47a3-ae28-646db5c5b965
@@ -31,6 +34,7 @@ block content
                     a(href="/admin?config=url", class="btn btn-sm btn-warning") Config the API URL 
                     a(href="/admin?config=query", class="btn btn-sm btn-warning") Config the query 
                     a(href="/admin/exportConfig", class="btn btn-sm btn-info") Export config file 
+                    a(href="/admin/deleteConfig", class="btn btn-sm btn-danger") Delete config file 
                     a(href="/admin?config=coordGen", class="btn btn-sm btn-success") Configure coordinate generator
                     div(class="card-text")
                         form(action="admin/save", method="post")
@@ -48,7 +52,7 @@ block content
                             button(type="submit", id="saveButton", class="btn btn-primary") Save
                 if step === 2
                     h4(class="card-title") Query settings
-                    div(class="alert alert-warning", id="minCheckboxWarning", role="alert") Not every endpoints support custom queries!
+                    div(class="alert alert-warning", id="minCheckboxWarning", role="alert") Not all the endpoints support custom queries!
                     div(class="card-text")
                         form(action="admin/save", method="post")
                             div(class="mb-3 mt-3")
@@ -61,7 +65,7 @@ block content
                             button(type="submit", class="btn btn-primary") Save
                 if coordGen
                     h4(class="card-title") Coordinates generator configuration
-                    div(class="alert alert-default", role="alert") You can reach this endpoint on: <a href="#{url}">#{url}</a>
+                    div(class="alert alert-default", role="alert") You can reach this endpoint on: <a href="#{url}">#{url}</a> (running without Docker) or <a href="http://coordgen:2000/api/generate-random-coords">http://coordgen:2000/api/generate-random-coords</a> (running in Docker)
                     div(class="card-text")
                         form(action="admin/save", method="post")
                             div(class="mb-3 mt-3")

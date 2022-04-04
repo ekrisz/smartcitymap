@@ -160,80 +160,47 @@ router.get('/logout', function (req, res) {
 })
 
 router.post('/save', function (req, res) {
-    switch (req.body.step) {
-        case "0":
-            mapSettings.url = req.body.url;
-            mapSettings.resourceID = req.body.resourceID;
-            try {
-                let cfgData = {
-                    loginData,
-                    mapSettings
-                }
-                fileSystem.writeFileSync(config, JSON.stringify(cfgData, null, 4));
-                res.redirect('/admin');
+    if(req.session.authenticated) {
+        switch (req.body.step) {
+            case "0":
+                mapSettings.url = req.body.url;
+                mapSettings.resourceID = req.body.resourceID;
+                try {
+                    let cfgData = {
+                        loginData,
+                        mapSettings
+                    }
+                    fileSystem.writeFileSync(config, JSON.stringify(cfgData, null, 4));
+                    res.redirect('/admin');
 
-            } catch (err) {
-                res.render('error', {
-                    error: {
-                        message: err
-                    }
-                });
-            }
-            break;
-        case "1":
-            mapSettings.selectedFields = req.body.fields;
-            try {
-                let cfgData = {
-                    loginData,
-                    mapSettings
+                } catch (err) {
+                    res.render('error', {
+                        error: {
+                            message: err
+                        }
+                    });
                 }
-                fileSystem.writeFileSync(config, JSON.stringify(cfgData, null, 4));
-                res.redirect('/');
-            } catch (err) {
-                res.render('error', {
-                    error: {
-                        message: "An error occured during saving the config file. Please try again. Error message: " + err
+                break;
+            case "1":
+                mapSettings.selectedFields = req.body.fields;
+                try {
+                    let cfgData = {
+                        loginData,
+                        mapSettings
                     }
-                });
-            }
-            break;
-        case "2":
-            mapSettings.query = (req.body.query === undefined ? "" : req.body.query);
-            mapSettings.limit = (req.body.limit === undefined ? "" : req.body.limit);
-            try {
-                let cfgData = {
-                    loginData,
-                    mapSettings
+                    fileSystem.writeFileSync(config, JSON.stringify(cfgData, null, 4));
+                    res.redirect('/');
+                } catch (err) {
+                    res.render('error', {
+                        error: {
+                            message: "An error occured during saving the config file. Please try again. Error message: " + err
+                        }
+                    });
                 }
-                fileSystem.writeFileSync(config, JSON.stringify(cfgData, null, 4));
-                res.redirect('/admin');
-            } catch (err) {
-                res.render('error', {
-                    error: {
-                        message: "An error occured during saving the config file. Please try again. Error message: " + err
-                    }
-                });
-            }
-            break;
-        default:
-            if(req.body.coordGen == "true") {
-                let customKey = req.body.customKey;
-                let customMinVal = req.body.customMinValue;
-                let customMaxVal = req.body.customMaxValue;
-                mapSettings.generatorValues.numberOfCoords = (req.body.numberOfCoords === undefined ? 1 : req.body.numberOfCoords);
-                mapSettings.generatorValues.minLatitude = (req.body.minLatitude === undefined ? 0 : req.body.minLatitude);
-                mapSettings.generatorValues.maxLatitude = (req.body.maxLatitude === undefined ? 0 : req.body.maxLatitude);
-                mapSettings.generatorValues.minLongitude = (req.body.minLongitude === undefined ? 0 : req.body.minLongitude);
-                mapSettings.generatorValues.maxLongitude = (req.body.maxLongitude === undefined ? 0 : req.body.maxLongitude);
-                mapSettings.generatorValues = {
-                    ...mapSettings.generatorValues,
-                    customField : {
-                        name: customKey,
-                        min: customMinVal,
-                        max: customMaxVal
-                    }
-                }      
-                console.log(mapSettings);
+                break;
+            case "2":
+                mapSettings.query = (req.body.query === undefined ? "" : req.body.query);
+                mapSettings.limit = (req.body.limit === undefined ? "" : req.body.limit);
                 try {
                     let cfgData = {
                         loginData,
@@ -248,30 +215,94 @@ router.post('/save', function (req, res) {
                         }
                     });
                 }
-            }
+                break;
+            default:
+                if(req.body.coordGen == "true") {
+                    let customKey = req.body.customKey;
+                    let customMinVal = req.body.customMinValue;
+                    let customMaxVal = req.body.customMaxValue;
+                    mapSettings.generatorValues.numberOfCoords = (req.body.numberOfCoords === undefined ? 1 : req.body.numberOfCoords);
+                    mapSettings.generatorValues.minLatitude = (req.body.minLatitude === undefined ? 0 : req.body.minLatitude);
+                    mapSettings.generatorValues.maxLatitude = (req.body.maxLatitude === undefined ? 0 : req.body.maxLatitude);
+                    mapSettings.generatorValues.minLongitude = (req.body.minLongitude === undefined ? 0 : req.body.minLongitude);
+                    mapSettings.generatorValues.maxLongitude = (req.body.maxLongitude === undefined ? 0 : req.body.maxLongitude);
+                    mapSettings.generatorValues = {
+                        ...mapSettings.generatorValues,
+                        customField : {
+                            name: customKey,
+                            min: customMinVal,
+                            max: customMaxVal
+                        }
+                    }      
+                    console.log(mapSettings);
+                    try {
+                        let cfgData = {
+                            loginData,
+                            mapSettings
+                        }
+                        fileSystem.writeFileSync(config, JSON.stringify(cfgData, null, 4));
+                        res.redirect('/admin');
+                    } catch (err) {
+                        res.render('error', {
+                            error: {
+                                message: "An error occured during saving the config file. Please try again. Error message: " + err
+                            }
+                        });
+                    }
+                }
+        }
+    } else {
+        res.redirect('/admin');
     }
 });
 
 router.get('/uptime', async function (req, res) {
-    function format(seconds) {
-        function pad(s) {
-            return (s < 10 ? '0' : '') + s;
-        }
-        var hours = Math.floor(seconds / (60 * 60));
-        var minutes = Math.floor(seconds % (60 * 60) / 60);
-        var seconds = Math.floor(seconds % 60);
+    if(req.session.authenticated) {
+        function format(seconds) {
+            function pad(s) {
+                return (s < 10 ? '0' : '') + s;
+            }
+            var hours = Math.floor(seconds / (60 * 60));
+            var minutes = Math.floor(seconds % (60 * 60) / 60);
+            var seconds = Math.floor(seconds % 60);
 
-        return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+            return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+        }
+        res.send("System uptime: " + format(process.uptime()));
+    } else {
+        res.redirect('/admin');
     }
-    res.send("System uptime: " + format(process.uptime()));
 });
 
 router.get('/exportConfig', function (req, res, next) {
-    res.set({
-        'Location': "/admin"
-    });
-    const file = `${__dirname}/../config.json`;
-    res.download(file);
+    if(req.session.authenticated) {
+        res.set({
+            'Location': "/admin"
+        });
+        const file = `${__dirname}/../config.json`;
+        res.download(file);
+    } else {
+        res.redirect('/admin');
+    }
+});
+
+router.get('/deleteConfig', function (req, res, next) {
+    if(req.session.authenticated) {
+        const file = `${__dirname}/../config.json`;
+        try {
+            req.session.authenticated = false;
+            fileSystem.unlinkSync(file);
+            res.redirect("/");
+        } catch(error) {
+            res.render('error', {
+                error: {
+                    message: "An error occured during deleting the config file. Please try again. Error message: " + err
+                }
+            });
+        }
+    } else {
+        res.redirect('/admin');
+    }
 });
 
 module.exports = router;
