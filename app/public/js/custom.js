@@ -55,7 +55,7 @@ $(document).ready(function (){
         } else {
             counter--;
         }
-        if(counter > 1) {
+        if(counter > 0) {
             $("#minCheckboxWarning").hide();
             $("button").prop("disabled", false);
         } else {

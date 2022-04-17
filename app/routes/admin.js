@@ -47,7 +47,7 @@ router.get('/', function (req, res) {
                                 error: error
                             });
                         });
-                    if(req.query.config == 'coordGen'){
+                    if (req.query.config == 'coordGen') {
                         res.render('admin/admin', {
                             authenticated: req.session.authenticated,
                             mapSettings,
@@ -160,7 +160,7 @@ router.get('/logout', function (req, res) {
 })
 
 router.post('/save', function (req, res) {
-    if(req.session.authenticated) {
+    if (req.session.authenticated) {
         switch (req.body.step) {
             case "0":
                 mapSettings.url = req.body.url;
@@ -182,7 +182,13 @@ router.post('/save', function (req, res) {
                 }
                 break;
             case "1":
-                mapSettings.selectedFields = req.body.fields;
+                const fields = req.body.fields;
+                if(typeof(fields) == 'object') {
+                    mapSettings.selectedFields = fields;
+                } else {
+                    mapSettings.selectedFields = [];
+                    mapSettings.selectedFields.push(fields);
+                }
                 try {
                     let cfgData = {
                         loginData,
@@ -217,7 +223,7 @@ router.post('/save', function (req, res) {
                 }
                 break;
             default:
-                if(req.body.coordGen == "true") {
+                if (req.body.coordGen == "true") {
                     let customKey = req.body.customKey;
                     let customMinVal = req.body.customMinValue;
                     let customMaxVal = req.body.customMaxValue;
@@ -228,12 +234,12 @@ router.post('/save', function (req, res) {
                     mapSettings.generatorValues.maxLongitude = (req.body.maxLongitude === undefined ? 0 : req.body.maxLongitude);
                     mapSettings.generatorValues = {
                         ...mapSettings.generatorValues,
-                        customField : {
+                        customField: {
                             name: customKey,
                             min: customMinVal,
                             max: customMaxVal
                         }
-                    }      
+                    }
                     console.log(mapSettings);
                     try {
                         let cfgData = {
@@ -257,7 +263,7 @@ router.post('/save', function (req, res) {
 });
 
 router.get('/uptime', async function (req, res) {
-    if(req.session.authenticated) {
+    if (req.session.authenticated) {
         function format(seconds) {
             function pad(s) {
                 return (s < 10 ? '0' : '') + s;
@@ -275,7 +281,7 @@ router.get('/uptime', async function (req, res) {
 });
 
 router.get('/exportConfig', function (req, res, next) {
-    if(req.session.authenticated) {
+    if (req.session.authenticated) {
         res.set({
             'Location': "/admin"
         });
@@ -287,13 +293,13 @@ router.get('/exportConfig', function (req, res, next) {
 });
 
 router.get('/deleteConfig', function (req, res, next) {
-    if(req.session.authenticated) {
+    if (req.session.authenticated) {
         const file = `${__dirname}/../config.json`;
         try {
             req.session.authenticated = false;
             fileSystem.unlinkSync(file);
             res.redirect("/");
-        } catch(error) {
+        } catch (error) {
             res.render('error', {
                 error: {
                     message: "An error occured during deleting the config file. Please try again. Error message: " + err
