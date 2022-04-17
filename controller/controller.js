@@ -31,7 +31,7 @@ const dataGet = () => {
         let points = new Array();
         let latitudes = new Array();
         let longitudes = new Array();
-        records.forEach(element => {
+        records.map(element => {
           let desc = '"';
           if ((element.Latitude != 0 || element.LATITUDE != 0) && (element.Longitude != 0 || element.LONGITUDE != 0)) {
             mapSettings.selectedFields.map((field) => {
