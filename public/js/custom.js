@@ -48,7 +48,8 @@ $(document).ready(function (){
         $(".leaflet-popup-content-wrapper").appendTo("#otherDiv");
         $(".leaflet-popup").hide();
     });
-    let counter = 0;
+    let counter = $('input:checkbox:checked').length;
+    if(counter > 0) enableButtonHideMessage(true);
     $(":checkbox").change(function() {
         if(this.checked) {
             counter++;
@@ -56,11 +57,9 @@ $(document).ready(function (){
             counter--;
         }
         if(counter > 0) {
-            $("#minCheckboxWarning").hide();
-            $("button").prop("disabled", false);
+            enableButtonHideMessage(true);
         } else {
-            $("#minCheckboxWarning").show();
-            $("button").prop("disabled", true);
+            enableButtonHideMessage(false);
         }
     });
     if(window.location.pathname.endsWith("admin")) {
@@ -71,3 +70,13 @@ $(document).ready(function (){
         }, 1000)        
     }
 });
+
+let enableButtonHideMessage = (enable) => {
+    if(enable) {
+        $("#minCheckboxWarning").hide();
+        $("button").prop("disabled", false);
+    } else {
+        $("#minCheckboxWarning").show();
+        $("button").prop("disabled", true);
+    }
+};

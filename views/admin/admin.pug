@@ -41,11 +41,10 @@ block content
                             - for(const field of fields) {
                                 div(class="mb-3 mt-3")
                                     div(class="form-check")
-                                    script.
-                                        if(selectedFields.includes(field))   
-                                            input(class="form-check-input", type="checkbox", name="fields", value=`${field.id}`, checked))
-                                        else 
-                                    input(class="form-check-input", type="checkbox", name="fields", value=`${field.id}`)
+                                    - if(Array.isArray(selectedFields) && selectedFields.includes(field.id))   
+                                        input(class="form-check-input", type="checkbox", name="fields", value=`${field.id}`, checked)
+                                    - else 
+                                        input(class="form-check-input", type="checkbox", name="fields", value=`${field.id}`)
                                     label(class="form-check-label", for=`${field.id}`) #{field.id} (#{field.type})
                             - }
                             input(type="hidden", name="step", value=1)
