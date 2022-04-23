@@ -21,7 +21,8 @@ router.get('/map', function (req, res) {
                                 title: "SmartCityMap",
                                 items: val,
                                 arraySize: val.points.length,
-                                authenticated: req.session.authenticated
+                                authenticated: req.session.authenticated,
+                                zoom: mapSettings.zoom
                             });
                         },
                         function (error) {
