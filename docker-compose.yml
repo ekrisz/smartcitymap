@@ -7,8 +7,8 @@ services:
         container_name: 'app'
         image: 'smartcitymap:latest'
         build:
-              dockerfile: ${PWD}/app/Dockerfile
-              context: ${PWD}/app
+              dockerfile: Dockerfile
+              context: ./app
         ports:
             - 3000:3000
         links:
@@ -18,15 +18,15 @@ services:
         container_name: 'mock'
         image: 'soapui:latest'
         build:
-            dockerfile: ${PWD}/soapui/Dockerfile
+            dockerfile: ./soapui/Dockerfile
         ports:
             - 7080:7080
         restart: on-failure
     coordgen:
         container_name: 'coordgen'
         build:
-              dockerfile: ${PWD}/coordgen/Dockerfile
-              context: ${PWD}/coordgen
+              dockerfile: Dockerfile
+              context: ./coordgen
         ports:
             - 2000:2000
         restart: on-failure
