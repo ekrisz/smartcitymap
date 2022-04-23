@@ -38,8 +38,11 @@ block content
                     a(href="/admin?config=coordGen", class="btn btn-sm btn-success") Configure coordinate generator
                     div(class="card-text")
                         form(action="admin/save", method="post")
+                            div(class="form-group col-2 mt-3")
+                                label(for="zoom") Map zoom
+                                input(type="number", class="form-control", name="zoom", id="zoom", required, value=`${mapSettings.zoom}`, placeholder="14 by default", step=0.01)
                             - for(const field of fields) {
-                                div(class="mb-3 mt-3")
+                                div(class="mb-3")
                                     div(class="form-check")
                                     - if(Array.isArray(selectedFields) && selectedFields.includes(field.id))   
                                         input(class="form-check-input", type="checkbox", name="fields", value=`${field.id}`, checked)
@@ -48,7 +51,7 @@ block content
                                     label(class="form-check-label", for=`${field.id}`) #{field.id} (#{field.type})
                             - }
                             input(type="hidden", name="step", value=1)
-                            button(type="submit", id="saveButton", class="btn btn-primary") Save
+                            button(type="submit", id="saveButton", class="btn btn-primary mt-4") Save
                 if step === 2
                     h4(class="card-title") Query settings
                     div(class="alert alert-warning", id="minCheckboxWarning", role="alert") Not all the endpoints support custom queries!

@@ -21,6 +21,7 @@ router.get('/', function (req, res) {
                     });
                 } else {
                     if (req.query.config == 'query') {
+                        if(mapSettings.query == null) mapSettings.query = "";
                         res.render('admin/admin', {
                             authenticated: req.session.authenticated,
                             mapSettings,
@@ -88,6 +89,7 @@ router.post('/firstrun', async function (req, res) {
                 latitude: null,
                 longitude: null
             },
+            zoom: 14,
             selectedFields: null,
             generatorValues: {
                 numberOfCoords: 20,
@@ -189,6 +191,7 @@ router.post('/save', function (req, res) {
                     mapSettings.selectedFields = [];
                     mapSettings.selectedFields.push(fields);
                 }
+                mapSettings.zoom = req.body.zoom;
                 try {
                     let cfgData = {
                         loginData,
